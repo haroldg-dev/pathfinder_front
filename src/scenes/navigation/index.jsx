@@ -63,7 +63,7 @@ const Navigation = () => {
   }, [markerList]);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyA9Uj24-1Hok4mp0u0MUoFEBtn4504uhVU",
+    googleMapsApiKey: process.env.local.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   });
 
   if (!isLoaded) {
