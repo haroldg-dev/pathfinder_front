@@ -107,7 +107,7 @@ const Sidebar = () => {
                   hgutierrez@urp.edu.pe
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Software Engineer
+                  Mechratronics Engineer
                 </Typography>
               </Box>
             </Box>
