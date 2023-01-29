@@ -134,7 +134,7 @@ const Dashboard = () => {
               Georeference
             </Typography>
           </Box>
-          <Box height="385px" width="500px" ml="12px" marginTop="20px">
+          <Box height="385px" width="96%" ml="12px" marginTop="20px">
             <Stlviewer isDashboard={true} />
           </Box>
         </Box>
