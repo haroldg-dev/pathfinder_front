@@ -9,10 +9,40 @@ import BatterySaverIcon from "@mui/icons-material/BatterySaver";
 import CloudOutlinedIcon from "@mui/icons-material/CloudOutlined";
 import Stlviewer from "../../components/Stlviewer";
 import MapViewer from "../../components/Mapviewer";
+
+import React, { useEffect, useState} from "react";
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:4000");
+
 const Dashboard = () => {
+  const [temp, setTemp] = useState();
+  const [presion, setPresion] = useState();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   console.log("dashboard");
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log("Socket Conectado")
+    });
+
+    socket.on('disconnect', () => {
+      console.log("Socket Desconectado")
+    });
+
+    socket.on('xbee:data', (res) => {
+      console.log(res)
+      console.log(res.tempInterna)
+      console.log(res.presion)
+      setTemp(res.tempInterna)
+      setPresion(res.presion)
+    });
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+      socket.off('xbee:data');
+    };
+  }, []);
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -49,7 +79,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="23,3 °C"
+            title={temp}
             subtitle="Temperature"
             progress="0.75"
             increase="+14%"
@@ -68,8 +98,8 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="43%"
-            subtitle="Humedad"
+            title={presion}
+            subtitle="Presión"
             progress="0.50"
             increase="+21%"
             icon={

@@ -4,19 +4,24 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 //import { StlViewer } from "./model-viewer";
 import Stlviewer from "../../components/Stlviewer";
-//import io from "socket.io-client";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:4000");
 
 const STLload = () => {
   //const [socket, setSocket] = useState(null);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  //const socket = io.connect("http://localhost:4000");
-  /* useEffect(() => {
+  /*useEffect(() => {
     const newSocket = io(`http://localhost:4000`);
     setSocket(newSocket);
     return () => newSocket.close();
-  }, [setSocket]); */
+  }, [setSocket]);*/
+
+
+
+
 
   // Set up state for the hovered and active state
   const [hovered, setHover] = useState(false);
