@@ -7,7 +7,7 @@ import {
   useLoader,
   useFrame,
 } from "@react-three/fiber";
-import pathToStl from "../assets/final.stl";
+import pathToStl from "../assets/velero.stl";
 import matcapPorcelainWhite from "../assets/matcap-porcelain-white.jpg";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
 import { AxesHelper } from "three";
@@ -20,14 +20,15 @@ const BoatViewer = () => {
   useEffect(() => {
     //camera.lookAt(ref.current.position);
     geom.computeVertexNormals(true);
-
+    geom.scale(0.1, 0.1, 0.1);
     geom.center();
 
     //axesHelper.applyMatrix4(new THREE.Matrix4.makeTranslation(1.5, 0, 0));
-    ref.current.rotation.y = 0.01;
-    ref.current.rotation.x = 1.365;
-    ref.current.rotation.z = 4.25;
-    ref.current.position.y = 10;
+    //ref.current.rotation.y = 0.01;
+    //ref.current.rotation.x = 1.365;
+    //ref.current.rotation.z = 4.25;
+    //ref.current.position.y = -13;
+    geom.translate(0, -14, 0);
   });
 
   useFrame((state, delta) => {
@@ -39,7 +40,7 @@ const BoatViewer = () => {
     <>
       <mesh ref={ref}>
         <primitive object={geom} attach="geometry" />
-        <meshStandardMaterial color={"green"} />
+        <meshStandardMaterial color={0x1e3f20} />
         <axesHelper scale="30" />
       </mesh>
       <ambientLight />

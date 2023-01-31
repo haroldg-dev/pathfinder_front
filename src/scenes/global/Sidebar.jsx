@@ -96,7 +96,7 @@ const Sidebar = () => {
           {!isCollapsed && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
-                <Avatar sx={{ width: 56, height: 56 }}>H</Avatar>
+                <Avatar sx={{ width: 56, height: 56 }}>D</Avatar>
               </Box>
               <Box textAlign="center">
                 <Typography
@@ -104,10 +104,10 @@ const Sidebar = () => {
                   color={colors.grey[100]}
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  hgutierrez@urp.edu.pe
+                  teamdatzon@urp.edu.pe
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Mechratronics Engineer
+                  Mechratronics Engineers
                 </Typography>
               </Box>
             </Box>

@@ -10,6 +10,8 @@ import {
 import { OrbitControls, Sky } from "@react-three/drei";
 import { Water } from "three-stdlib";
 import BoatViewer from "../components/BoatViewer";
+import VelaViewer from "./VelaViewer";
+import VelaViewer2 from "./VelaViewer2";
 
 extend({ Water });
 
@@ -58,13 +60,15 @@ function Box() {
 
 export default function Stlviewer() {
   return (
-    <Canvas camera={{ position: [0, 5, 100], fov: 55, near: 1, far: 20000 }}>
+    <Canvas camera={{ position: [10, 60, -450], fov: 15, near: 1, far: 20000 }}>
       <pointLight position={[100, 100, 100]} />
       <pointLight position={[-100, -100, -100]} />
       <Suspense fallback={null}>
         <Ocean />
         <Suspense fallback={null}>
           <BoatViewer />
+          <VelaViewer />
+          <VelaViewer2 />
         </Suspense>
       </Suspense>
       <Sky scale={1000} sunPosition={[500, 150, -1000]} turbidity={0.1} />

@@ -9,7 +9,7 @@ import Form from "./scenes/form";
 import FAQ from "./scenes/faq";
 import Georeference from "./scenes/georeference";
 import Navigation from "./scenes/navigation";
-import ManualControl from "./scenes/manual";
+import ManualControl from "./scenes/consola";
 
 function App() {
   const [theme, colorMode] = useMode();

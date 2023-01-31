@@ -10,37 +10,47 @@ import CloudOutlinedIcon from "@mui/icons-material/CloudOutlined";
 import Stlviewer from "../../components/Stlviewer";
 import MapViewer from "../../components/Mapviewer";
 
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
+import Terminal from "../../components/Terminal";
 const socket = io.connect("http://localhost:4000");
 
 const Dashboard = () => {
   const [temp, setTemp] = useState();
   const [presion, setPresion] = useState();
+  const [velViento, setVelViento] = useState();
+  const [dirViento, setDirViento] = useState();
+  const [bateria1, setBateria1] = useState();
+  const [bateria2, setBateria2] = useState();
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   console.log("dashboard");
   useEffect(() => {
-    socket.on('connect', () => {
-      console.log("Socket Conectado")
+    socket.on("connect", () => {
+      console.log("Socket Conectado");
     });
 
-    socket.on('disconnect', () => {
-      console.log("Socket Desconectado")
+    socket.on("disconnect", () => {
+      console.log("Socket Desconectado");
     });
 
-    socket.on('xbee:data', (res) => {
-      console.log(res)
-      console.log(res.tempInterna)
-      console.log(res.presion)
-      setTemp(res.tempInterna)
-      setPresion(res.presion)
+    socket.on("xbee:data", (res) => {
+      console.log(res);
+      console.log(res.tempInterna);
+      console.log(res.presion);
+      setTemp(res.tempInterna);
+      setPresion(res.presion);
+      setVelViento(res.velViento);
+      setDirViento(res.dirViento);
+      setBateria1(res.bateria1);
+      setBateria2(res.bateria2);
     });
 
     return () => {
-      socket.off('connect');
-      socket.off('disconnect');
-      socket.off('xbee:data');
+      socket.off("connect");
+      socket.off("disconnect");
+      socket.off("xbee:data");
     };
   }, []);
   return (
@@ -72,15 +82,15 @@ const Dashboard = () => {
       >
         {/* ROW1 */}
         <Box
-          gridColumn="span 3"
+          gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
           <StatBox
-            title={temp}
-            subtitle="Temperature"
+            title="27.3 °C"
+            subtitle="Temperatura Interna"
             progress="0.75"
             increase="+14%"
             icon={
@@ -91,15 +101,15 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
           <StatBox
-            title={presion}
-            subtitle="Presión"
+            title="1050.1"
+            subtitle="Presión Barométrica"
             progress="0.50"
             increase="+21%"
             icon={
@@ -110,7 +120,7 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -129,7 +139,26 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 2"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title="30°"
+            subtitle="Dirección de Viento"
+            progress="0.30"
+            increase="+5%"
+            icon={
+              <SpeedIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -137,7 +166,26 @@ const Dashboard = () => {
         >
           <StatBox
             title="80%"
-            subtitle="Battery Status"
+            subtitle="Batteria 1"
+            progress="0.80"
+            increase="+43%"
+            icon={
+              <BatterySaverIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 2"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title="80%"
+            subtitle="Batteria 2"
             progress="0.80"
             increase="+43%"
             icon={
@@ -201,10 +249,12 @@ const Dashboard = () => {
             alignItems="center"
           >
             <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
-              Control
+              Consola
             </Typography>
           </Box>
-          <Box height="250px" ml="-20px"></Box>
+          <Box height="100%" width="95%" ml="10px" mt="20px">
+            <Terminal />
+          </Box>
         </Box>
       </Box>
     </Box>
