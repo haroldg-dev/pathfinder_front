@@ -9,9 +9,16 @@ import io from "socket.io-client";
 const socket = io.connect("http://localhost:4000");
 
 const STLload = () => {
-  //const [socket, setSocket] = useState(null);
+  const [brujula, setBrujula] = useState();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  socket.on("xbee:space", (res) => {
+    //console.log(res);
+    //console.log(res.temperatura);
+    //console.log(res.presion);
+    setBrujula(res.brujula);
+  });
 
   /*useEffect(() => {
     const newSocket = io(`http://localhost:4000`);
@@ -54,7 +61,7 @@ const STLload = () => {
           height="150"
           viewBox="0 0 200 200"
           space="preserve"
-          transform={`rotate(${compass})`}
+          transform={`rotate(${brujula})`}
         >
           <g transform="translate(19 -19)">
             <path
@@ -66,8 +73,8 @@ const STLload = () => {
             <text
               transform="matrix(1 0 0 1 77 37)"
               fill="#575756"
-              fontFamily="Arial"
-              fontSize="12"
+              fontFamily="Arial Black"
+              fontSize="20"
             >
               N
             </text>

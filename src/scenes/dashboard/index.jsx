@@ -17,11 +17,10 @@ const socket = io.connect("http://localhost:4000");
 
 const Dashboard = () => {
   const [temp, setTemp] = useState();
-  const [presion, setPresion] = useState();
+  const [humedad, setHumedad] = useState();
   const [velViento, setVelViento] = useState();
   const [dirViento, setDirViento] = useState();
-  const [bateria1, setBateria1] = useState();
-  const [bateria2, setBateria2] = useState();
+
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -35,16 +34,14 @@ const Dashboard = () => {
       console.log("Socket Desconectado");
     });
 
-    socket.on("xbee:data", (res) => {
-      console.log(res);
-      console.log(res.tempInterna);
-      console.log(res.presion);
-      setTemp(res.tempInterna);
-      setPresion(res.presion);
+    socket.on("xbee:sensores", (res) => {
+      //console.log(res);
+      //console.log(res.temperatura);
+      //console.log(res.presion);
+      setTemp(res.temperatura);
+      setHumedad(res.humedad);
       setVelViento(res.velViento);
       setDirViento(res.dirViento);
-      setBateria1(res.bateria1);
-      setBateria2(res.bateria2);
     });
 
     return () => {
@@ -89,7 +86,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="27.3 °C"
+            title={`{temp} °`}
             subtitle="Temperatura Interna"
             progress="0.75"
             increase="+14%"
@@ -108,8 +105,8 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="1050.1"
-            subtitle="Presión Barométrica"
+            title={`${humedad}`}
+            subtitle="Humedad"
             progress="0.50"
             increase="+21%"
             icon={
@@ -127,7 +124,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="30 nudos"
+            title={`${velViento} Nudos`}
             subtitle="Velocidad de Viento"
             progress="0.30"
             increase="+5%"
@@ -146,7 +143,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="30°"
+            title={`${dirViento} °`}
             subtitle="Dirección de Viento"
             progress="0.30"
             increase="+5%"
