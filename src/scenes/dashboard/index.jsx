@@ -9,45 +9,22 @@ import BatterySaverIcon from "@mui/icons-material/BatterySaver";
 import CloudOutlinedIcon from "@mui/icons-material/CloudOutlined";
 import Stlviewer from "../../components/Stlviewer";
 import MapViewer from "../../components/Mapviewer";
-
 import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
 import Terminal from "../../components/Terminal";
-const socket = io.connect("http://localhost:4000");
 
-const Dashboard = () => {
-  const [temp, setTemp] = useState();
-  const [humedad, setHumedad] = useState();
-  const [velViento, setVelViento] = useState();
-  const [dirViento, setDirViento] = useState();
-
+const Dashboard = ({ socket }) => {
+  const [data, setData] = useState({});
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   console.log("dashboard");
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Socket Conectado");
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Socket Desconectado");
-    });
-
     socket.on("xbee:sensores", (res) => {
-      //console.log(res);
-      //console.log(res.temperatura);
-      //console.log(res.presion);
-      setTemp(res.temperatura);
-      setHumedad(res.humedad);
-      setVelViento(res.velViento);
-      setDirViento(res.dirViento);
+      console.log(res);
+      setData(res);
     });
-
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
-      socket.off("xbee:data");
+      socket.off("xbee:sensores");
     };
   }, []);
   return (
@@ -86,7 +63,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={`{temp} °`}
+            title={`${data.tempInterna} °C`}
             subtitle="Temperatura Interna"
             progress="0.75"
             increase="+14%"
@@ -105,7 +82,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={`${humedad}`}
+            title={`${data.humedad}`}
             subtitle="Humedad"
             progress="0.50"
             increase="+21%"
@@ -124,7 +101,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={`${velViento} Nudos`}
+            title={`${data.velViento} Nudos`}
             subtitle="Velocidad de Viento"
             progress="0.30"
             increase="+5%"
@@ -143,7 +120,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={`${dirViento} °`}
+            title={`${data.dirViento} °`}
             subtitle="Dirección de Viento"
             progress="0.30"
             increase="+5%"
@@ -230,7 +207,7 @@ const Dashboard = () => {
             </Typography>
           </Box>
           <Box ml="-9px">
-            <MapViewer isDashboard={true} />
+            <MapViewer isDashboard={true} sock={socket} />
           </Box>
         </Box>
         <Box

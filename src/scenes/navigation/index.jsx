@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import MapViewer from "../../components/Mapviewer";
 
-const Navigation = () => {
+const Navigation = ({ socket }) => {
   /* const markers = [
         {
           position: { lat: -12.073906, lng: }
@@ -18,13 +18,10 @@ const Navigation = () => {
           position: { lat: -12.072542, lng: -77.158157 }
         },
         {
-          id: 4,
+          id: 4,s
           position: { lat: -12.070234, lng:  }
         }
     ]; */
-
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
 
   return (
     <Box m="20px">
@@ -37,7 +34,7 @@ const Navigation = () => {
       {/* <Box display="flex" alignItems="center">
                 <h1>{responseData.name}</h1>
             </Box> */}
-      <MapViewer />
+      <MapViewer sock={socket} />
     </Box>
   );
 };

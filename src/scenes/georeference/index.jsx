@@ -1,39 +1,25 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Box, Typography, useTheme } from "@mui/material";
-import { tokens } from "../../theme";
+import React, { useState, useEffect } from "react";
+import { Box } from "@mui/material";
 import Header from "../../components/Header";
-//import { StlViewer } from "./model-viewer";
 import Stlviewer from "../../components/Stlviewer";
-import io from "socket.io-client";
 
-const socket = io.connect("http://localhost:4000");
+const STLload = ({ socket }) => {
+  const [data, setData] = useState({});
 
-const STLload = () => {
-  const [brujula, setBrujula] = useState();
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  useEffect(() => {
+    socket.on("xbee:space", (res) => {
+      console.log(res);
+      setData(res);
+    });
 
-  socket.on("xbee:space", (res) => {
-    //console.log(res);
-    //console.log(res.temperatura);
-    //console.log(res.presion);
-    setBrujula(res.brujula);
-  });
-
-  /*useEffect(() => {
-    const newSocket = io(`http://localhost:4000`);
-    setSocket(newSocket);
-    return () => newSocket.close();
-  }, [setSocket]);*/
-
-
-
-
+    return () => {
+      socket.off("xbee:sensores");
+    };
+  }, [socket]);
 
   // Set up state for the hovered and active state
-  const [hovered, setHover] = useState(false);
-  const [active, setActive] = useState(false);
-  const [compass, setCompass] = useState(200);
+  //const [hovered, setHover] = useState(false);
+  //const [active, setActive] = useState(false);
 
   return (
     <Box m="20px">
@@ -47,7 +33,7 @@ const STLload = () => {
         width="75%"
         height="75%"
       >
-        <Stlviewer />
+        <Stlviewer x={data.accelx} y={data.accely} />
       </Box>
       <Box position="relative">
         <svg
@@ -61,7 +47,7 @@ const STLload = () => {
           height="150"
           viewBox="0 0 200 200"
           space="preserve"
-          transform={`rotate(${brujula})`}
+          transform={`rotate(${data.brujula})`}
         >
           <g transform="translate(19 -19)">
             <path

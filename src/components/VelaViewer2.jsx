@@ -1,27 +1,18 @@
-import * as THREE from "three";
 import React, { useRef, useEffect } from "react";
-import { useThree, useLoader, useFrame } from "@react-three/fiber";
-import pathToStl from "../assets/vela2.stl";
-import matcapPorcelainWhite from "../assets/matcap-porcelain-white.jpg";
+import { useLoader, useFrame } from "@react-three/fiber";
+import pathToStl from "../assets/velafinal2.stl";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
-import { AxesHelper } from "three";
 
 const VelaViewer2 = () => {
   const geom = useLoader(STLLoader, pathToStl);
-  const axesHelper = new THREE.AxesHelper();
   const ref = useRef();
-  const { camera } = useThree();
+  const scaleRef = useRef(false);
   useEffect(() => {
-    //camera.lookAt(ref.current.position);
+    if (scaleRef.current) return;
+    scaleRef.current = true;
     geom.computeVertexNormals(true);
-    geom.scale(0.1, 0.1, 0.1);
+    //geom.scale(0.1, 0.1, 0.1);
     geom.center();
-
-    //axesHelper.applyMatrix4(new THREE.Matrix4.makeTranslation(1.5, 0, 0));
-    //ref.current.rotation.y = 0.01;
-    //ref.current.rotation.x = 1.365;
-    //ref.current.rotation.z = 4.25;
-    //ref.current.position.y = 13;
     geom.translate(0.5, 45, -6.5);
     ref.current.position.z = -21;
     ref.current.rotation.y = -0.8;

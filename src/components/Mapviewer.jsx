@@ -1,13 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Box, Input, Button, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import axios from "axios";
+/* import axios from "axios"; */
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
-const weather_endpoint = "https://api.openweathermap.org/data/2.5/weather?";
-const weather_apikey = "d08b6a1a50b778c6d218428c496f096b";
+/* const weather_endpoint = "https://api.openweathermap.org/data/2.5/weather?";
+const weather_apikey = "d08b6a1a50b778c6d218428c496f096b"; */
 
-const MapViewer = ({ isDashboard = false }) => {
+const MapViewer = ({ isDashboard = false, sock }) => {
   /* if (!latitude) {
     navigator.geolocation.getCurrentPosition((position) => {
       setLatitude(parseFloat(position.coords.latitude));
@@ -25,16 +25,26 @@ const MapViewer = ({ isDashboard = false }) => {
       });
   }
  */
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  const [data, setData] = useState({});
   const [latitude, setLatitude] = React.useState(0);
   const [longitude, setLongitude] = React.useState(0);
   const [responseData, setResponseData] = React.useState("");
   const [markerList, setMarkerList] = useState([]);
   const [inputLatitud, setInputLatitud] = useState("");
   const [inputLongitud, setInputLongitud] = useState("");
+  useEffect(() => {
+    sock.on("xbee:gps", (res) => {
+      //console.log(res);
+      setData(res);
+    });
 
+    return () => {
+      sock.off("xbee:gps");
+    };
+  }, [sock]);
   useEffect(() => {
     markerList.map((item, i) => {
       setLatitude(latitude + item.position.lat);
@@ -106,6 +116,16 @@ const MapViewer = ({ isDashboard = false }) => {
               markerList.map(({ position }, id) => (
                 <Marker key={id} position={position}></Marker>
               ))}
+            {data != null ? (
+              <Marker
+                position={{
+                  lat: parseFloat(data.latitude),
+                  lng: parseFloat(data.longitude),
+                }}
+              ></Marker>
+            ) : (
+              <Marker position={{ lat: 0, lng: -0 }}></Marker>
+            )}
           </GoogleMap>
         </Box>
         {isDashboard ? (

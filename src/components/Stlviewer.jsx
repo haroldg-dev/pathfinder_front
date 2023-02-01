@@ -58,15 +58,15 @@ function Box() {
   );
 }
 
-export default function Stlviewer() {
+export default function Stlviewer({ x, y }) {
   return (
-    <Canvas camera={{ position: [10, 60, -450], fov: 15, near: 1, far: 20000 }}>
+    <Canvas camera={{ position: [10, 60, -450], fov: 25, near: 1, far: 20000 }}>
       <pointLight position={[100, 100, 100]} />
       <pointLight position={[-100, -100, -100]} />
       <Suspense fallback={null}>
         <Ocean />
         <Suspense fallback={null}>
-          <BoatViewer />
+          <BoatViewer x={x} y={y} />
           <VelaViewer />
           <VelaViewer2 />
         </Suspense>
